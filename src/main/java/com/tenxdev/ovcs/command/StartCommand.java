@@ -1,5 +1,13 @@
 package com.tenxdev.ovcs.command;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+
+import com.tenxdev.ovcs.OvcsException;
+
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com> This file is
  * part of OVCS.
@@ -17,14 +25,26 @@ package com.tenxdev.ovcs.command;
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class StartCommand implements Command {
+public class StartCommand extends AbstractCommand {
 
 	public static final String USAGE = "ovcs start schema";
 
 	@Override
-	public void execute(String[] args) {
-		// TODO Auto-generated method stub
-
+	public void execute(String[] args) throws OvcsException {
+		FileRepository repository = getRepoForCurrentDir();
+		try (Connection conn = getDbConnectionForRepo(repository)) {
+			try (CallableStatement stmt = conn
+					.prepareCall("begin ovcs.handler.start_session; end;")) {
+				stmt.execute();
+				System.out.println("Session started");
+			}
+		} catch (SQLException e) {
+			if (isApplicationError(e)){
+				throw new OvcsException(getApplicationError(e));
+			}
+			throw new OvcsException("Unexpected database error: "
+					+ e.getMessage(), e);
+		}
 	}
 
 }

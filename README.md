@@ -1,19 +1,48 @@
-__Configuration__
+All commands must be run in the working directory used during the `init` command.
 
-    ovcs config db ovcs/ovcs@localhost:1521:XE
 
 __Schema initialization__
+
+`ovcs init oracle-connection-string git-repository-uri`
 	
-    ovcs init HR http://localhost/scm/hr.git
+Initialize the current directory as the local file store for schema objects, with the specified Oracle connection string and the URI of the GIT repository that will hold the schema objects for the connection string's schema. The specified directory must be empty. This command is run once by a developer for each schema of interest, using a new directory for each schema.
+
+_Example:_
+
+`ovcs init HR/HR@localhost:1521:XE https://jsmith:password@github.com/jsmith/hr-schema.git`
     
 __Session start__
 
-	ovcs start HR
-	
-__Session end__
+`ovcs start`
 
-	ovcs end HR
-	Enter commit message, end with a single period at start of line to end
-	modified countries table
-	+review HR @john.doe
-	.
+Starts an editing session. 
+
+__Status__
+
+`ovcs status`
+
+View pending changes. 
+
+__Diff__
+
+`ovcs diff object-name`
+
+Show differences in an object.
+
+_Example:_
+
+`ovcs diff COUNTRIES`
+
+	
+__Commit changes__
+
+`ovcs commit`
+
+Ends an editing session, and commits changed objects to the repository. 
+
+__Push Changes__
+
+`ovcs push`
+
+Push all pending commits to the remote Git repository. 
+

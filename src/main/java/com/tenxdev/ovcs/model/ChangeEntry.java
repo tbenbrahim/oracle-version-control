@@ -1,4 +1,5 @@
-package com.tenxdev.ovcs.command;
+package com.tenxdev.ovcs.model;
+
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com> This file is
  * part of OVCS.
@@ -15,14 +16,24 @@ package com.tenxdev.ovcs.command;
  * You should have received a copy of the GNU General Public License along with
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
-public class EndCommand implements Command {
 
-	public static final String USAGE = "ovcs end schema";
+public class ChangeEntry {
 
-	@Override
-	public void execute(String[] args) {
-		// TODO Auto-generated method stub
+	private final String name;
+	private final boolean removed;
 
+	public ChangeEntry(String name, boolean removed) {
+		super();
+		this.name = name;
+		this.removed = removed;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public boolean isRemoved() {
+		return removed;
 	}
 
 }

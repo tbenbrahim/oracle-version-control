@@ -23,15 +23,19 @@ public final class CommandFactory {
 		if (args.length==0){
 			return new UsageCommand();
 		}
-		switch(args[0]){
-		case "config":
-			return new ConfigCommand();
+		switch(args[0].toLowerCase()){
 		case "init":
 			return new InitCommand();
 		case "start":
 			return new StartCommand();
-		case "end":
-			return new EndCommand();
+		case "status":
+			return new StatusCommand();
+		case "diff":
+			return new DiffCommand();
+		case "commit":
+			return new CommitCommand();
+		case "push":
+			return new PushCommand();
 		default:
 			return new UsageCommand();
 		}
