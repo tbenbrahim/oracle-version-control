@@ -16,41 +16,18 @@
  */
 package com.tenxdev.ovcs;
 
-import org.fusesource.jansi.AnsiConsole;
+public final class StringUtils {
 
-import com.tenxdev.ovcs.command.CommandFactory;
-
-/**
- * Application main class
- *
- * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
- *
- */
-public final class Application {
-
-	/**
-	 * main method
-	 *
-	 * @param args
-	 *            command line arguments
-	 */
-	public static void main(final String... args) {
-		try {
-			AnsiConsole.systemInstall();
-			CommandFactory.getCommandForArguments(args).execute(args);
-			System.exit(0);
-		} catch (final OvcsException e) {
-			System.err.println(e.getMessage());
-			System.exit(-1);
+	public static String rpad(final String input, final int desiredLength) {
+		final int len = input.length();
+		if (len >= desiredLength) {
+			return input;
 		}
+		return input + SPACES.substring(0, desiredLength - len);
 	}
 
-	/**
-	 * the name of the folder under the user home directory where settings are
-	 * stored
-	 */
-	public static final String CONFIG_FOLDER_NAME = ".ovcs";
+	private static final String SPACES = "                                                                                ";
 
-	private Application() {
+	private StringUtils() {
 	}
 }

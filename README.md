@@ -1,5 +1,21 @@
 All commands must be run in the working directory used during the `init` command.
 
+__Configuration__
+
+`ovcs config key value`
+
+Configure ovcs for first time use. The following settings are supported:
+
+- oracle-driver sets the location of the Oracle JDBC library
+
+_Example:_ (actual path may vary)
+
+on Windows: `ovcs config oracle-driver c:\oracle\app\oracle\product\11.2.0\server\jdbc\lib\ojdbc6.jar`
+
+or
+
+on Linux/OS X : `ovcs config oracle-driver /usr/local/oracle/server/jdbc/lib/ojdbc6.jar`
+
 
 __Schema initialization__
 

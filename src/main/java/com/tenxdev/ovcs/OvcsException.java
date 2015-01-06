@@ -1,4 +1,5 @@
 package com.tenxdev.ovcs;
+
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com>
  *  This file is part of OVCS.
@@ -7,23 +8,24 @@ package com.tenxdev.ovcs;
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * OVCS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with OVCS.  If not, see <http://www.gnu.org/licenses/>.
  */
 @SuppressWarnings("serial")
-public class OvcsException extends Exception{
-	
-	public OvcsException(String message){
+public class OvcsException extends Exception {
+
+	public OvcsException(final String message) {
 		super(message);
 	}
-	public OvcsException(String message, Throwable t){
-		super(message, t);
+
+	public OvcsException(final String message, final Throwable throwable) {
+		super(message, throwable);
 	}
 
 }

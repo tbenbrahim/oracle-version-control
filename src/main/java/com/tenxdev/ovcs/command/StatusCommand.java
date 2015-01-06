@@ -13,16 +13,16 @@ import com.tenxdev.ovcs.OvcsException;
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com> This file is
  * part of OVCS.
- * 
+ *
  * OVCS is free software: you can redistribute it and/or modify it under the
  * terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- * 
+ *
  * OVCS is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -30,9 +30,9 @@ import com.tenxdev.ovcs.OvcsException;
 public class StatusCommand extends AbstractOvcsCommand {
 
 	@Override
-	public void execute(String[] args) throws OvcsException {
+	public void execute(final String... args) throws OvcsException {
 		System.out.println("Fetching changes from database...");
-		FileRepository repository = getRepoForCurrentDir();
+		final FileRepository repository = getRepoForCurrentDir();
 		try {
 			writeChanges(repository);
 			displayChanges(repository);
@@ -41,9 +41,9 @@ public class StatusCommand extends AbstractOvcsCommand {
 		}
 	}
 
-	private void displayChanges(FileRepository repository) throws OvcsException {
+	private void displayChanges(final FileRepository repository) throws OvcsException {
 		try {
-			Status status = new Git(repository).status().call();
+			final Status status = new Git(repository).status().call();
 			if (status.isClean()) {
 				System.out.println("No changes.");
 			} else {
@@ -52,15 +52,14 @@ public class StatusCommand extends AbstractOvcsCommand {
 				displayChanges("Removed", status.getMissing());
 			}
 		} catch (NoWorkTreeException | GitAPIException e) {
-			throw new OvcsException("Unable to query git status: "
-					+ e.getMessage(), e);
+			throw new OvcsException("Unable to query git status: " + e.getMessage(), e);
 		}
 	}
 
-	private void displayChanges(String title, Set<String> filenames) {
+	private void displayChanges(final String title, final Set<String> filenames) {
 		if (!filenames.isEmpty()) {
 			System.out.println(title + ":");
-			for (String filename : filenames) {
+			for (final String filename : filenames) {
 				System.out.println("\t" + filename);
 			}
 		}
