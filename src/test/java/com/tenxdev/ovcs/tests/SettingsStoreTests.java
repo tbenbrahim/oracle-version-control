@@ -17,21 +17,43 @@ package com.tenxdev.ovcs.tests;
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.UUID;
 
-import junit.framework.TestCase;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.tenxdev.ovcs.SettingsStore;
 import com.tenxdev.ovcs.SettingsStore.MissingSettingException;
 import com.tenxdev.ovcs.SettingsStore.SettingsNotLoadedException;
 import com.tenxdev.ovcs.SettingsStore.SettingsStoreException;
 
-public class SettingsStoreTests extends TestCase {
+public class SettingsStoreTests {
 
-	private transient String configFolderName;
+	@AfterClass
+	public static void afterClass() throws Exception {
+		if (!getSettingsFile().delete() || !getSettingsFile().getParentFile().delete()) {
+			System.err.println(String.format("Unbale to delete %s", getSettingsFile().getParent()));
+		}
+	}
 
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		configFolderName = "." + UUID.randomUUID().toString();
+	}
+
+	private static File getSettingsFile() {
+		return Paths.get(System.getProperty("user.home"), configFolderName, "settings").toFile();
+	}
+
+	private static String configFolderName;
+
+	@Test
 	public void testRetrievingMandatory() throws SettingsStoreException {
 		new SettingsStore(configFolderName).load().setSetting("foo", "bar").store();
 		String value = new SettingsStore(configFolderName).load().getSetting("foo", true);
@@ -45,6 +67,7 @@ public class SettingsStoreTests extends TestCase {
 		}
 	}
 
+	@Test
 	public void testRetrievingWithDefaults() throws SettingsStoreException {
 		final SettingsStore store = new SettingsStore(configFolderName).load();
 		String value = store.getSetting("baz", "abc");
@@ -53,14 +76,12 @@ public class SettingsStoreTests extends TestCase {
 		assertEquals("abc", value);
 	}
 
+	@Test(expected = SettingsNotLoadedException.class)
 	public void testSettingWihtoutLoad() throws SettingsStoreException {
-		try {
-			new SettingsStore(configFolderName).setSetting("foo", "bar");
-		} catch (final SettingsNotLoadedException expect) {
-			// expected exception
-		}
+		new SettingsStore(configFolderName).setSetting("foo", "bar");
 	}
 
+	@Test
 	public void testStoringAndRetrieving() throws SettingsStoreException {
 		final SettingsStore store = new SettingsStore(configFolderName).load();
 		store.setSetting("foo", "bar").store();
@@ -73,31 +94,10 @@ public class SettingsStoreTests extends TestCase {
 		assertEquals("bar", value);
 	}
 
+	@Test(expected = SettingsNotLoadedException.class)
 	public void testStoringWihtoutLoad() throws SettingsStoreException {
 		new SettingsStore(configFolderName).load().store();
-		try {
-			new SettingsStore(configFolderName).store();
-		} catch (final SettingsNotLoadedException expect) {
-			// expected exception
-		}
-	}
-
-	private File getSettingsFile() {
-		return Paths.get(System.getProperty("user.home"), configFolderName, "settings").toFile();
-	}
-
-	@Override
-	protected void setUp() throws Exception {
-		configFolderName = "." + UUID.randomUUID().toString();
-		super.setUp();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		if (!getSettingsFile().delete() || !getSettingsFile().getParentFile().delete()) {
-			System.err.println(String.format("Unbale to delete %s", getSettingsFile().getParent()));
-		}
+		new SettingsStore(configFolderName).store();
 	}
 
 }
