@@ -8,12 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.Status;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.errors.NoWorkTreeException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 
 import com.tenxdev.ovcs.OvcsException;
@@ -50,12 +45,11 @@ public abstract class AbstractOvcsCommand extends AbstractCommand {
 	 */
 	private static final String CHANGES_QUERY = "select user_objects.object_name, action, original_source, "
 			+ " dbms_metadata.get_ddl(user_objects.object_type, user_objects.object_name) current_source"
-			+ " from ovcs.locked_objects, user_objects" + " where  osuser=lower(sys_context('USERENV', 'OS_USER'))"
+			+ " from ovcs.locked_objects, user_objects" + " where  osuser=ovcs.handler.get_osuser"
 			+ " and schema_name=upper(sys_context('USERENV', 'SESSION_USER'))"
-			+ " and user_objects.OBJECT_NAME=locked_objects.object_name"
-			+ " and user_objects.OBJECT_TYPE=locked_objects.object_type" + " union all"
+			+ " and user_objects.OBJECT_NAME=locked_objects.object_name" + " union all"
 			+ " select object_name, action, original_source,  null current_source " + " from ovcs.locked_objects"
-			+ " where  osuser=lower(sys_context('USERENV', 'OS_USER'))"
+			+ " where  osuser=ovcs.handler.get_osuser"
 			+ " and schema_name=upper(sys_context('USERENV', 'SESSION_USER'))" + " and action='DROP'";
 
 	/**
@@ -63,26 +57,6 @@ public abstract class AbstractOvcsCommand extends AbstractCommand {
 	 */
 	protected AbstractOvcsCommand() {
 		super();
-	}
-
-	private void showModifiedWarning(final Set<String> list) {
-		for (final String filename : list) {
-			System.out.println(String.format("Warning: it apppears that %s was modified outside ovcs.", filename));
-		}
-	}
-
-	private void warnIfNotClean(final FileRepository repo) throws OvcsException {
-		final Git git = new Git(repo);
-		try {
-			final Status status = git.status().call();
-			if (!status.isClean()) {
-				showModifiedWarning(status.getConflicting());
-				showModifiedWarning(status.getModified());
-				showModifiedWarning(status.getUntrackedFolders());
-			}
-		} catch (NoWorkTreeException | GitAPIException e) {
-			throw new OvcsException("Unable to query git status: " + e.getMessage(), e);
-		}
 	}
 
 	private void writeChangesFirstPass(final ResultSet rset, final Path workingDirectory) throws SQLException,
@@ -139,7 +113,6 @@ public abstract class AbstractOvcsCommand extends AbstractCommand {
 			try (PreparedStatement stmt = conn.prepareStatement(CHANGES_QUERY)) {
 				try (ResultSet rset = stmt.executeQuery()) {
 					writeChangesFirstPass(rset, workingDirectory);
-					warnIfNotClean(repository);
 				}
 			}
 			try (PreparedStatement stmt = conn.prepareStatement(CHANGES_QUERY)) {

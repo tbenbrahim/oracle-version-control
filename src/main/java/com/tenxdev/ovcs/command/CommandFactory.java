@@ -52,6 +52,8 @@ public final class CommandFactory {
 			return new CommitCommand();
 		case "push":
 			return new PushCommand();
+		case "sync":
+			return new SyncCommand();
 		default:
 			return new UsageCommand();
 		}

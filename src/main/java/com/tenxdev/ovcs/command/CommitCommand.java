@@ -46,26 +46,23 @@ public class CommitCommand extends AbstractOvcsCommand {
 		final FileRepository repository = getRepoForCurrentDir();
 		try {
 			try (Connection conn = getDbConnectionForRepo(repository)) {
+				final Git git = new Git(repository);
+				final List<ChangeEntry> changes = writeChanges(repository);
+				if (changes.isEmpty()) {
+					System.out.println("No changes have been made, ending session");
+				} else {
+					try {
+						for (final ChangeEntry changeEntry : changes) {
+							git.add().addFilepattern(changeEntry.getName().toUpperCase(Locale.getDefault()) + ".sql")
+									.call();
+						}
+						git.commit().setMessage(getCommitMessage()).setAll(true).call();
+					} catch (final GitAPIException e) {
+						throw new OvcsException("Unable to commit: " + e.getMessage(), e);
+					}
+				}
 				try (CallableStatement stmt = conn.prepareCall("begin ovcs.handler.end_session; end;")) {
 					stmt.execute();
-				} catch (final SQLException e) {
-					if (isApplicationError(e)) {
-						throw new OvcsException("Unable to commit: " + getApplicationError(e), e);
-					}
-					throw new OvcsException("Unable to commit: " + e.getMessage(), e);
-				}
-				final List<ChangeEntry> changes = writeChanges(repository);
-				final Git git = new Git(repository);
-				try {
-					for (final ChangeEntry changeEntry : changes) {
-						git.add().addFilepattern(changeEntry.getName().toUpperCase(Locale.getDefault()) + ".sql")
-								.call();
-					}
-					git.commit().setMessage(getCommitMessage()).setAll(true).call();
-				} catch (final GitAPIException e) {
-					throw new OvcsException("Unable to commit: " + e.getMessage(), e);
-				}
-				try {
 					conn.commit();
 				} catch (final SQLException e) {
 					throw new OvcsException(
@@ -73,14 +70,17 @@ public class CommitCommand extends AbstractOvcsCommand {
 									+ "ovcs.handler.end_session from your schema and commit to bring the database into a consistent state.",
 							e);
 				}
-				try {
-					doPush(git);
-				} catch (final GitAPIException e) {
-					throw new OvcsException(
-							String.format(
-									"All changes have been committed, but were not sent to the remote repository%n"
-											+ "Please run the ovcs push command to retry sending to the remote repository%nError: %s",
-									e.getMessage()), e);
+				if (!changes.isEmpty()) {
+					try {
+						doPush(git);
+						System.out.println("All changes committed and sent to remote repository.");
+					} catch (final GitAPIException e) {
+						throw new OvcsException(
+								String.format(
+										"All changes have been committed, but were not sent to the remote repository%n"
+												+ "Please run the ovcs push command to retry sending to the remote repository%nError: %s",
+										e.getMessage()), e);
+					}
 				}
 			} catch (final SQLException e) {
 				throw new OvcsException(
@@ -88,8 +88,6 @@ public class CommitCommand extends AbstractOvcsCommand {
 								+ "ovcs.handler.end_session from your schema and commit to bring the database into a consistent state.",
 						e);
 			}
-			System.out.println("All changes committed and sent to remote repository.");
-
 		} finally {
 			repository.close();
 		}

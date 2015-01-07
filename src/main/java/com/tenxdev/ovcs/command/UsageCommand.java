@@ -37,6 +37,7 @@ public class UsageCommand implements Command {
 				+ "    start           start an ovcs session.\n"
 				+ "    status          displays changed objects since start of session.\n"
 				+ "    diff            show detailed changes between database and last commit\n"
+				+ "    sync            synchronize the local repo with the database\n"
 				+ "    commit          end a session, commit and send changes to remote repo.\n"
 				+ "    push            send changes to remote repo, if push failed during commit.\n");
 	}

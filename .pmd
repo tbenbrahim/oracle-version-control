@@ -744,19 +744,11 @@
             <ruleset>JavaBeans</ruleset>
         </rule>
         <rule>
-            <name>JUnitAssertionsShouldIncludeMessage</name>
-            <ruleset>JUnit</ruleset>
-        </rule>
-        <rule>
             <name>JUnitSpelling</name>
             <ruleset>JUnit</ruleset>
         </rule>
         <rule>
             <name>JUnitStaticSuite</name>
-            <ruleset>JUnit</ruleset>
-        </rule>
-        <rule>
-            <name>JUnitTestContainsTooManyAsserts</name>
             <ruleset>JUnit</ruleset>
         </rule>
         <rule>
