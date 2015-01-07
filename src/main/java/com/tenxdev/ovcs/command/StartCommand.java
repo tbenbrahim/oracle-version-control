@@ -32,7 +32,7 @@ import com.tenxdev.ovcs.UsageException;
  * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
  *
  */
-public class StartCommand extends AbstractCommand {
+public class StartCommand extends AbstractOvcsCommand {
 
 	/**
 	 * command usage

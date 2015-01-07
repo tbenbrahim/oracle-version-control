@@ -33,7 +33,7 @@ import com.tenxdev.ovcs.UsageException;
  * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
  *
  */
-public class StatusCommand extends AbstractOvcsCommand {
+public class StatusCommand extends AbstractChangeCommand {
 
 	/**
 	 * command usage

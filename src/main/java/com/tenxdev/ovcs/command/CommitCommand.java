@@ -39,7 +39,7 @@ import com.tenxdev.ovcs.model.ChangeEntry;
  * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
  *
  */
-public class CommitCommand extends AbstractOvcsCommand {
+public class CommitCommand extends AbstractChangeCommand {
 
 	/**
 	 * command usage

@@ -19,8 +19,6 @@ package com.tenxdev.ovcs.command;
 import java.util.Arrays;
 import java.util.List;
 
-import com.tenxdev.ovcs.Application;
-import com.tenxdev.ovcs.OracleDriverLoader;
 import com.tenxdev.ovcs.OvcsException;
 import com.tenxdev.ovcs.Settings;
 import com.tenxdev.ovcs.SettingsStore;
@@ -33,7 +31,7 @@ import com.tenxdev.ovcs.UsageException;
  * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
  *
  */
-public class ConfigCommand implements Command {
+public class ConfigCommand extends AbstractOvcsCommand {
 
 	/**
 	 * list of valid configuration settings
@@ -58,14 +56,14 @@ public class ConfigCommand implements Command {
 		}
 		final String value = args[2];
 		if (Settings.ORACLE_DRIVER.equals(key)) {
-			new OracleDriverLoader().load(value);
+			loadOracleJbcDriver(value);
 		}
 		storeSetting(key, value);
 	}
 
 	private void storeSetting(final String key, final String value) throws OvcsException {
 		try {
-			new SettingsStore(Application.CONFIG_FOLDER_NAME).load().setSetting(key, value).store();
+			new SettingsStore(CONFIG_FOLDER_NAME).load().setSetting(key, value).store();
 		} catch (final SettingsStoreException e) {
 			throw new OvcsException("Unable to configure ovcs: " + e.getMessage(), e);
 		}

@@ -73,13 +73,21 @@
    <rule ref="rulesets/plsql/codesize.xml/ExcessiveParameterList"/>
    <rule ref="rulesets/java/codesize.xml/ExcessivePublicCount"/>
    <rule ref="rulesets/plsql/codesize.xml/ExcessiveTypeLength"/>
-   <rule ref="rulesets/java/codesize.xml/ModifiedCyclomaticComplexity"/>
+   <rule ref="rulesets/java/codesize.xml/ModifiedCyclomaticComplexity">
+   	<properties>
+   		<property name="reportLevel" value="20"/>
+   	</properties>
+   </rule>
    <rule ref="rulesets/java/codesize.xml/NcssConstructorCount"/>
    <rule ref="rulesets/plsql/codesize.xml/NcssMethodCount"/>
    <rule ref="rulesets/plsql/codesize.xml/NcssObjectCount"/>
    <rule ref="rulesets/java/codesize.xml/NcssTypeCount"/>
    <rule ref="rulesets/plsql/codesize.xml/NPathComplexity"/>
-   <rule ref="rulesets/java/codesize.xml/StdCyclomaticComplexity"/>
+   <rule ref="rulesets/java/codesize.xml/StdCyclomaticComplexity">
+   	<properties>
+   		<property name="reportLevel" value="20"/>
+   	</properties>
+   </rule>
    <rule ref="rulesets/plsql/codesize.xml/TooManyFields"/>
    <rule ref="rulesets/plsql/codesize.xml/TooManyMethods"/>
    <rule ref="rulesets/java/comments.xml/CommentContent"/>

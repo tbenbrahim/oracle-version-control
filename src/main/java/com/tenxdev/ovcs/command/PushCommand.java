@@ -29,7 +29,7 @@ import com.tenxdev.ovcs.UsageException;
  * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
  *
  */
-public class PushCommand extends AbstractCommand {
+public class PushCommand extends AbstractOvcsCommand {
 
 	/**
 	 * command usage

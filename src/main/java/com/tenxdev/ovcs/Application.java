@@ -45,12 +45,6 @@ public final class Application {
 		}
 	}
 
-	/**
-	 * the name of the folder under the user home directory where settings are
-	 * stored
-	 */
-	public static final String CONFIG_FOLDER_NAME = ".ovcs";
-
 	private Application() {
 	}
 }

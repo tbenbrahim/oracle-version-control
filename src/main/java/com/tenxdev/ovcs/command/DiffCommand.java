@@ -37,7 +37,7 @@ import com.tenxdev.ovcs.UsageException;
  * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
  *
  */
-public class DiffCommand extends AbstractOvcsCommand {
+public class DiffCommand extends AbstractChangeCommand {
 
 	/**
 	 * command usage

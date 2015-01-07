@@ -38,7 +38,7 @@ import com.tenxdev.ovcs.OvcsException;
  * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
  *
  */
-public abstract class AbstractSyncCommand extends AbstractOvcsCommand {
+public abstract class AbstractSyncCommand extends AbstractChangeCommand {
 
 	/**
 	 * Commit all changes and push to remote repository
