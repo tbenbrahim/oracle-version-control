@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/tbenbrahim/oracle-version-control.png)](https://travis-ci.org/tbenbrahim/oracle-version-control)
+
+
+
 All commands must be run in the working directory used during the `init` command.
 
 __Configuration__
