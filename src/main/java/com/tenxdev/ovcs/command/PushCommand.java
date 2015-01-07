@@ -1,5 +1,3 @@
-package com.tenxdev.ovcs.command;
-
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com> This file is
  * part of OVCS.
@@ -16,11 +14,14 @@ package com.tenxdev.ovcs.command;
  * You should have received a copy of the GNU General Public License along with
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
+package com.tenxdev.ovcs.command;
+
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 
 import com.tenxdev.ovcs.OvcsException;
+import com.tenxdev.ovcs.UsageException;
 
 /**
  * implements the push command
@@ -30,8 +31,19 @@ import com.tenxdev.ovcs.OvcsException;
  */
 public class PushCommand extends AbstractCommand {
 
+	/**
+	 * command usage
+	 */
+	private static final String USAGE = "   ovcs sync";
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(final String... args) throws OvcsException {
+		if (args.length != 1) {
+			throw new UsageException(USAGE);
+		}
 		final FileRepository repository = getRepoForCurrentDir();
 		try {
 			doPush(new Git(repository));

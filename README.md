@@ -54,11 +54,16 @@ __Commit changes__
 
 `ovcs commit`
 
-Ends an editing session, and commits changed objects to the repository. 
+Ends an editing session, and commits and pushes changed objects to the repository. 
 
 __Push Changes__
 
 `ovcs push`
 
-Push all pending commits to the remote Git repository. 
+Push all pending commits to the remote Git repository (only needed if commit succeed but push fails during `ovcs commit`
 
+__Synchronize__
+
+``ovcs sync``
+
+Synchronizes the local repository, and if needed the remote repository, with the database objects.

@@ -1,15 +1,3 @@
-package com.tenxdev.ovcs.command;
-
-import java.util.Set;
-
-import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.Status;
-import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.errors.NoWorkTreeException;
-import org.eclipse.jgit.internal.storage.file.FileRepository;
-
-import com.tenxdev.ovcs.OvcsException;
-
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com> This file is
  * part of OVCS.
@@ -26,11 +14,40 @@ import com.tenxdev.ovcs.OvcsException;
  * You should have received a copy of the GNU General Public License along with
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
+package com.tenxdev.ovcs.command;
 
+import java.util.Set;
+
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.errors.NoWorkTreeException;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+
+import com.tenxdev.ovcs.OvcsException;
+import com.tenxdev.ovcs.UsageException;
+
+/**
+ * implementation of status command
+ *
+ * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
+ *
+ */
 public class StatusCommand extends AbstractOvcsCommand {
 
+	/**
+	 * command usage
+	 */
+	private static final String USAGE = "    ovcs status";
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(final String... args) throws OvcsException {
+		if (args.length != 1) {
+			throw new UsageException(USAGE);
+		}
 		System.out.println("Fetching changes from database...");
 		final FileRepository repository = getRepoForCurrentDir();
 		try {

@@ -1,5 +1,3 @@
-package com.tenxdev.ovcs.command;
-
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com> This file is
  * part of OVCS.
@@ -16,6 +14,7 @@ package com.tenxdev.ovcs.command;
  * You should have received a copy of the GNU General Public License along with
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
+package com.tenxdev.ovcs.command;
 
 import java.io.IOException;
 import java.util.List;
@@ -32,10 +31,22 @@ import com.tenxdev.ovcs.GitUtils;
 import com.tenxdev.ovcs.OvcsException;
 import com.tenxdev.ovcs.UsageException;
 
+/**
+ * Implementation of diff command
+ *
+ * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
+ *
+ */
 public class DiffCommand extends AbstractOvcsCommand {
 
-	private static final String USAGE = "ovcs diff [object-name]";
+	/**
+	 * command usage
+	 */
+	private static final String USAGE = "    ovcs diff [object-name]";
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(final String... args) throws OvcsException {
 		if (args.length != 1 && args.length != 2) {

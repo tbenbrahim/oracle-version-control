@@ -1,5 +1,3 @@
-package com.tenxdev.ovcs.command;
-
 /*
  * Copyright 2015 Abed Tony BenBrahim <tony.benbrahim@10xdev.com> This file is
  * part of OVCS.
@@ -16,6 +14,8 @@ package com.tenxdev.ovcs.command;
  * You should have received a copy of the GNU General Public License along with
  * OVCS. If not, see <http://www.gnu.org/licenses/>.
  */
+package com.tenxdev.ovcs.command;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,11 +27,26 @@ import com.tenxdev.ovcs.SettingsStore;
 import com.tenxdev.ovcs.SettingsStore.SettingsStoreException;
 import com.tenxdev.ovcs.UsageException;
 
+/**
+ * implementation of config command
+ *
+ * @author Tony BenBrahim <tony.benbrahim@10xdev.com>
+ *
+ */
 public class ConfigCommand implements Command {
 
-	private static final List<String> KNOWN_KEYS = Arrays.asList(new String[] { "oracle-driver" });
-	public static final String USAGE = "ovcs config key value";
+	/**
+	 * list of valid configuration settings
+	 */
+	private static final List<String> KNOWN_KEYS = Arrays.asList(new String[] { Settings.ORACLE_DRIVER });
+	/**
+	 * command usage
+	 */
+	private static final String USAGE = "    ovcs config key value";
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(final String... args) throws OvcsException {
 		if (args.length != 3) {
