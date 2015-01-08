@@ -29,7 +29,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.tenxdev.ovcs.SettingsStore;
-import com.tenxdev.ovcs.SettingsStore.MissingSettingException;
 import com.tenxdev.ovcs.SettingsStore.SettingsNotLoadedException;
 import com.tenxdev.ovcs.SettingsStore.SettingsStoreException;
 
@@ -60,11 +59,11 @@ public class SettingsStoreTests {
 		assertEquals("bar", value);
 		value = new SettingsStore(configFolderName).load().getSetting("foo", "foo", true);
 		assertEquals("bar", value);
-		try {
-			new SettingsStore(configFolderName).load().getSetting("qwe", true);
-		} catch (final MissingSettingException expect) {
-			// expected exception
-		}
+	}
+
+	@Test(expected = SettingsStoreException.class)
+	public void testRetrievingMandatoryMissing() throws SettingsStoreException {
+		new SettingsStore(configFolderName).load().getSetting("qwe", true);
 	}
 
 	@Test

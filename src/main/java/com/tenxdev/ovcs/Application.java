@@ -16,8 +16,6 @@
  */
 package com.tenxdev.ovcs;
 
-import org.fusesource.jansi.AnsiConsole;
-
 import com.tenxdev.ovcs.command.CommandFactory;
 
 /**
@@ -36,7 +34,6 @@ public final class Application {
 	 */
 	public static void main(final String... args) {
 		try {
-			AnsiConsole.systemInstall();
 			CommandFactory.getCommandForArguments(args).execute(args);
 			System.exit(0);
 		} catch (final OvcsException e) {
