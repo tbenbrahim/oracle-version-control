@@ -9,17 +9,18 @@
 	</formats>
 	<fileSets>
 		<fileSet>
-			<directory>${project.basedir}/install-files</directory>
-			<outputDirectory>/</outputDirectory>
-			<includes>
-				<include>**/*</include>
-			</includes>
-		</fileSet>
-		<fileSet>
 			<directory>${project.build.directory}</directory>
-			<outputDirectory>/bin</outputDirectory>
+			<outputDirectory>/ovcs/bin</outputDirectory>
 			<includes>
 				<include>ovcs-client.jar</include>
+			</includes>
+			<directoryMode>0755</directoryMode>
+		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/install-files</directory>
+			<outputDirectory>/ovcs/</outputDirectory>
+			<includes>
+				<include>**/*</include>
 			</includes>
 		</fileSet>
 	</fileSets>
