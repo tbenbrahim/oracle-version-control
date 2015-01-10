@@ -21,7 +21,10 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.TextProgressMonitor;
 
 import com.tenxdev.ovcs.OvcsException;
 import com.tenxdev.ovcs.UsageException;
@@ -49,21 +52,19 @@ public class SyncCommand extends AbstractSyncCommand {
 			throw new UsageException(USAGE);
 		}
 		final FileRepository repository = getRepoForCurrentDir();
-		final File workingDirectory = repository.getWorkTree();
-		clearDirectory(workingDirectory);
-		try (Connection conn = getDbConnectionForRepo(repository)) {
-			writeSchemaObjects(conn, workingDirectory.toPath());
-			commitAndPush();
-		} catch (final SQLException e) {
-			throw new OvcsException("Unable to connect to database: " + e.getMessage(), e);
-		}
-	}
-
-	private void clearDirectory(final File workingDirectory) {
-		for (final File file : workingDirectory.listFiles()) {
-			if (file.isFile() && !file.delete()) {
-				System.out.println(String.format("Warning: Unable to delete file %s", file.getPath()));
+		try {
+			final File workingDirectory = repository.getWorkTree();
+			new Git(repository).pull().setProgressMonitor(new TextProgressMonitor()).call();
+			try (Connection conn = getDbConnectionForRepo(repository)) {
+				writeSchemaObjects(conn, workingDirectory.toPath());
+				commitAndPush();
+			} catch (final SQLException e) {
+				throw new OvcsException("Unable to connect to database: " + e.getMessage(), e);
 			}
+		} catch (final GitAPIException e) {
+			throw new OvcsException("Unable to synchronize with remote repository: " + e.getMessage(), e);
+		} finally {
+			repository.close();
 		}
 	}
 
